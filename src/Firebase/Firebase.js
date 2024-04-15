@@ -4,14 +4,14 @@ import { getAuth } from "firebase/auth";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB6fdL5k0xRPmoJgW83uEqW-PinL8irIYY",
-  authDomain: "recipe-server-f97e9.firebaseapp.com",
-  databaseURL: "https://recipe-server-f97e9-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "recipe-server-f97e9",
-  storageBucket: "recipe-server-f97e9.appspot.com",
-  messagingSenderId: "180254957444",
-  appId: "1:180254957444:web:0005ba5c96b6f43f4487d1",
-  measurementId: "G-6LH3MWM22X"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
 const firebase = initializeApp(firebaseConfig);
