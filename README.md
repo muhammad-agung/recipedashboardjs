@@ -13,4 +13,5 @@ it uses Firebase as a fplatform for its datanse and authentication
 ![image](https://github.com/muhammad-agung/recipedashboardjs/assets/64388091/266f5f44-d703-4d68-b3aa-998bc99971bd)
 
 
-![image](https://github.com/muhammad-agung/recipedashboardjs/assets/64388091/77f16389-ec82-4be2-bb43-f97349d36896)
+![image](https://github.com/muhammad-agung/recipedashboardjs/assets/64388091/df69b8ad-7408-41f4-8c7a-0f6e3bbdff8c)
+
