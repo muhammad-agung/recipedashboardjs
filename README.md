@@ -7,6 +7,8 @@ This is the backend for https://github.com/muhammad-agung/recipewebsitejs reposi
 
 it uses Firebase as a fplatform for its datanse and authentication
 
+There will be other things coming ssoon, such as statistics and so on..
+
 ![image](https://github.com/muhammad-agung/recipedashboardjs/assets/64388091/c144a031-b3da-4bc4-9d9a-558f098c4a57)
 
 
