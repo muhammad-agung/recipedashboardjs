@@ -6,6 +6,7 @@ import ContentDetailPage from './ContentDetail/ContentDetailPage';
 import ContentCreatorPage from './ContentCreator/ContentCreatorPage';
 import ContentEditorPage from './ContentEditor/ContentEditorPage';
 import { Navbar } from "./Components/Navbar/Navbar";
+import LoadingAnimation from './Components/Loading/Loading';
 
 export default function App() {
   return (
@@ -22,13 +23,29 @@ export default function App() {
 
 // Component to render the sign-in page if the user is signed out, otherwise navigate to the home page
 function SignInOrNavigateToHome() {
-  const { user } = useAuth();
-  return user ? <Navigate to="/home" replace /> : <SignIn />;
+  const { user, loading } = useAuth();
+
+  // Render loading animation while checking authentication status
+  if (loading) {
+    return <LoadingAnimation />;
+  }
+
+  // If user is authenticated, navigate to home page
+  if (user) {
+    return <Navigate to="/home" replace />;
+  }
+
+  // If user is not authenticated, render sign-in page
+  return <SignIn />;
 }
 
 // Component to render authenticated routes
 function AuthenticatedRoutes() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <LoadingAnimation />;
+  }
 
   // If user is not authenticated, navigate to the sign-in page
   if (!user) {

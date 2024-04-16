@@ -84,7 +84,7 @@ nav .menu span {
   }
 
   nav ul li {
-    width: 100%;
+    width: 90%;
     text-align: center;
     margin-left: 0; /* Remove margin between list items */
   }

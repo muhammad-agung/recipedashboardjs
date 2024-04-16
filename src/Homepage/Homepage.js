@@ -3,13 +3,16 @@ import { getFirestore, collection, query, doc, deleteDoc, getDocs} from 'firebas
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import DeleteModal from '../Components/Modal/DeleteModal';
-import {TextField, Stack,Divider, Radio, RadioGroup, FormControlLabel, Pagination, Button, Table, TableBody, TableRow, TableCell, IconButton, Checkbox} from '@mui/material';
+import {TextField, Stack,Divider, Radio, RadioGroup, FormControlLabel, Pagination, Button, Table, TableContainer, TableBody, TableRow, TableCell, IconButton, Checkbox} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Visibility from '@mui/icons-material/Visibility';
 
 import { Link as RouterLink } from 'react-router-dom';
+import MobilePaginationComponent from '../Components/Pagination/MobilePagination';
 import {db} from '../Firebase/Firebase'
+import { useMediaQuery } from '@mui/material';
+
 
 
 const Homepage = () => {
@@ -18,7 +21,7 @@ const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const pageNumbers = [];
-  const [recipesPerPage] = useState(20);
+  const [recipesPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteItemId, setDeleteItemId] = useState(null); // Add state to store the id of the item to be deleted
 
@@ -120,34 +123,34 @@ const Homepage = () => {
           <FormControlLabel value="male" control={<Radio onClick={sortByDate}/>} label="Sort by Date" />
         </RadioGroup>
       </Stack>
-      <Table>
-        <TableBody>
-          {currentRecipes.map((recipe) => (
-            <TableRow key={recipe.id} style={{ backgroundColor: '#FBE9E7', borderRadius: 100 }}>
-              <TableCell>
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">{recipe.title}</div>
-                  Created: {recipe.timestamp.toLocaleDateString()}
-                </div>
-              </TableCell>
-              <TableCell align='right'>
-              <IconButton component={RouterLink} to={`/recipe/${recipe.id}`}  state={{ currentRecipe: recipe }}>
-                  <Visibility />
-                </IconButton>
-                <IconButton component={RouterLink} to={`/recipeEditor/${recipe.id}`}  state={{ currentRecipe: recipe }}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton  onClick={() => handleDeleteModalOpen(recipe.id)}>
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Stack spacing={2} sx={{ display:"flex" , justifyContent:"center", alignItems:"center", marginTop : 10, paddingBottom: 5 }}>
-        <Pagination count={pageNumbers.length} variant="outlined" color="primary" onChange={handleChange} style={{backgroundColor: 'white'}}/>
-      </Stack>
+      <TableContainer>
+        <Table>
+          <TableBody>
+            {currentRecipes.map((recipe) => (
+              <TableRow key={recipe.id} style={{ backgroundColor: '#FBE9E7', borderRadius: 100 }}>
+                <TableCell>
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">{recipe.title}</div>
+                    Created: {recipe.timestamp.toLocaleDateString()}
+                  </div>
+                </TableCell>
+                <TableCell align='right'>
+                <IconButton component={RouterLink} to={`/recipe/${recipe.id}`}  state={{ currentRecipe: recipe }}>
+                    <Visibility />
+                  </IconButton>
+                  <IconButton component={RouterLink} to={`/recipeEditor/${recipe.id}`}  state={{ currentRecipe: recipe }}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton  onClick={() => handleDeleteModalOpen(recipe.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+        <MobilePaginationComponent pageNumbers={pageNumbers} currentPage={currentPage} handleChange={handleChange} />
     </div>
   );
 };

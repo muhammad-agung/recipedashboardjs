@@ -8,12 +8,6 @@ const UploadScreen = ({ onThumbnailSelected, thumbnail, deleteThumbnail }) => {
   const [image, setImage] = useState(thumbnail ? { uri: thumbnail } : null);
 
 
-  // useEffect(() => {
-  // if(thumbnail != undefined){
-  //   setImage(thumbnail);
-  // }
-  // }) 
-
   const pickImage = useCallback(async (e) => {
     try {
       const file = e.target.files[0];
@@ -55,13 +49,18 @@ const UploadScreen = ({ onThumbnailSelected, thumbnail, deleteThumbnail }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '100vh', // Ensure the component takes up the entire viewport height
+        minHeight: '5vh',
+        paddingBottom: '5vh'// Ensure the component takes up the entire viewport height
       }}
     >
-      <input type="file" accept="image/*" onChange={pickImage} />
-      <p></p>
-      <Button variant="contained" onClick={deleteImage}>
-        <p>Delete Image</p>
+      <Button onClick={deleteImage} style={{backgroundColor: '#FBE9E7', color: 'black', margin:20, padding: 10}}>
+      <label for="file-upload" class="custom-file-upload">
+        Upload Image 
+      </label>
+      </Button>
+      <input id="file-upload" type="file" accept="image/*" onChange={pickImage} hidden/>
+      <Button onClick={deleteImage} style={{backgroundColor: '#FBE9E7', color: 'black', margin:20, padding: 10}}>
+        Delete Image
       </Button>
       <div>
         {image && <img src={image.uri} alt="Thumbnail" style={{ width: 350, height: 450 }} />}

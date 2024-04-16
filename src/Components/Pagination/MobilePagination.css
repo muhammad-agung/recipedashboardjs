@@ -1,0 +1,21 @@
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .active-page {
+    background-color: #FBE9E7;
+    border-color: #FBE9E7;
+  }
+
+  .pagination-container .page-item.active .page-link {
+    background-color: #FBE9E7 !important;
+    border-color: #FBE9E7 !important;
+    border-radius: 0%;
+    color: black;
+  }
+
+  .page-item .page-link {
+    color: black;
+  }
