@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { Box, TextField, Button } from '@mui/material';
 import { handleSave, checkEmpty } from '../Functions/ContentCreatorFunc';
 import SaveModal from '../Components/Modal/SaveModal';
-import RichTextEditor from '../Components/RichTextEditor/Textditor';
 import ImageUploadHandler from '../Components/ImageUploadHandler';
+
+// import RichTextEditor from '../Components/RichTextEditor/Textditor';
+import RichTextEditor from '../Components/RichTextEditor/TinyMce';
+
 
 const RecipeCreator = () => {
   const [title, setTitle] = useState('');

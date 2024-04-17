@@ -1,10 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom'; // Import useLocation hook
-// import Editor from '@draft-js-plugins/editor';
-import { Editor } from 'react-draft-wysiwyg';    
-import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { EditorState, convertFromRaw } from 'draft-js';
 import Box from '@mui/material/Box';
+import { Editor } from '@tinymce/tinymce-react'; // Import Editor component directly
 
 const ContentDetailScreen = () => {
   const location = useLocation(); // Initialize useLocation hook
@@ -14,48 +11,31 @@ const ContentDetailScreen = () => {
     return <div>Recipe not found</div>;
   }
 
-  const contentState = convertFromRaw(JSON.parse(currentRecipe.content));
-  const editorState = EditorState.createWithContent(contentState);
-
   return (
-    <div style={{ width: '100%', backgroundColor: '#FFCCBC' }}>
+    <div style={{ width: '100%', backgroundColor: '#FFCCBC', paddingTop: '1%', paddingBottom: '50px' }}>
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: '1%',
         }}
       >
         <h1>{currentRecipe.title}</h1>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
         <p>{currentRecipe.shortDesc}</p>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <img src={currentRecipe.thumbnail} alt={`Thumbnail for ${currentRecipe.title}`} />
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
+        <img style={{paddingBottom: 20}} src={currentRecipe.thumbnail} alt={`Thumbnail for ${currentRecipe.title}`} />
         <Editor
-            wrapperStyle={{ width: '90%' }}
-            editorState={editorState}
-            readOnly
-            toolbarHidden
-            autoHeight
-          />
+          apiKey='cnra8bfoc01172abmclve5xtbay0i4b7q9lb7hq5qj977oem'
+          init={{
+            plugins: 'anchor autolink charmap codesample emoticons image link lists searchreplace visualblocks wordcount checklist casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode advtemplate mentions tableofcontents footnotes mergetags autocorrect inlinecss markdown',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image | spellcheckdialog | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            selector: 'textarea',
+            height: 800,
+        }}
+          initialValue={currentRecipe.content} // Pass the content as initialValue
+          disabled
+        />
       </Box>
     </div>
   );
