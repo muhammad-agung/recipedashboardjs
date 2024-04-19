@@ -32,7 +32,7 @@ export const Navbar = () => {
         <span></span>
         <span></span>
       </div>
-      <ul className={menuOpen ? "open" : ""}>
+      <ul style={{fontWeight:"bold"}} className={menuOpen ? "open" : ""}>
       <li>
         <Link component={RouterLink} to={`/newrecipe`}>Create New Recipe</Link>
         </li>

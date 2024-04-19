@@ -3,15 +3,16 @@ import { getFirestore, collection, query, doc, deleteDoc, getDocs} from 'firebas
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import DeleteModal from '../Components/Modal/DeleteModal';
-import {TextField, Stack,Divider, Radio, RadioGroup, FormControlLabel, Pagination, Button, Table, TableContainer, TableBody, TableRow, TableCell, IconButton, Checkbox} from '@mui/material';
+import {TextField, Stack, Radio, RadioGroup, FormControlLabel, Box, IconButton, Typography} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Visibility from '@mui/icons-material/Visibility';
 
 import { Link as RouterLink } from 'react-router-dom';
 import MobilePaginationComponent from '../Components/Pagination/MobilePagination';
+
+//Required to intialised database
 import {db} from '../Firebase/Firebase'
-import { useMediaQuery } from '@mui/material';
 
 
 
@@ -75,7 +76,16 @@ const Homepage = () => {
   const handleDeleteClick = async () => {
     try {
       const firestore = getFirestore();
-      await deleteDoc(doc(firestore, 'users', deleteItemId)); // Delete the document with the specified id
+  
+      // Delete the recipe document
+      await deleteDoc(doc(firestore, 'users', deleteItemId));
+  
+      // Delete the counter document associated with the recipe
+      await deleteDoc(doc(firestore, 'recipeCounters', deleteItemId));
+  
+      // Delete the rating document associated with the recipe
+      await deleteDoc(doc(firestore, 'recipeRatings', deleteItemId));
+  
       setDeleteModalOpen(false); // Close the modal after deletion
       window.location.reload(); // Refresh the page
     } catch (error) {
@@ -108,48 +118,48 @@ const Homepage = () => {
   };
 
   return (
-    <div>
+    <div style={{backgroundColor:'#FBE9E7'}}>
       <DeleteModal open={deleteModalOpen} handleClose={() => setDeleteModalOpen(false)} handleDelete={handleDeleteClick} />
       <div style={{ textAlign: 'center' }}>
         <TextField id="outlined-search" label="Search field" type="search" value={searchQuery} onChange={handleSearchChange} style={{ width: '100%', maxWidth: '300px', margin: 10, backgroundColor: '#FBE9E7' }} />
       </div>
-      <Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2} textAlign={'center'}>
-        <RadioGroup
-          row
-          aria-labelledby="demo-row-radio-buttons-group-label"
-          name="row-radio-buttons-group"
-        >
-          <FormControlLabel value="female" control={<Radio onClick={sortByTitle}/>} label="Sort by Title" />
-          <FormControlLabel value="male" control={<Radio onClick={sortByDate}/>} label="Sort by Date" />
-        </RadioGroup>
+      <RadioGroup
+        row
+        aria-labelledby="demo-row-radio-buttons-group-label"
+        name="row-radio-buttons-group"
+        style={{
+          display: 'flex',
+          justifyContent: 'center', // Horizontally center the items
+          alignItems: 'center', // Vertically center the items
+          padding: 10, // Add padding for better spacing
+        }}
+      >
+        <FormControlLabel value="female" control={<Radio onClick={sortByTitle} />} label="Sort by Title" />
+        <FormControlLabel value="male" control={<Radio onClick={sortByDate} />} label="Sort by Date" />
+      </RadioGroup>
+      <Stack direction="column" spacing={2}>
+        {currentRecipes.map((recipe) => (
+          <Box
+            key={recipe.id}
+            component="section"
+            sx={{ p: 2, border: '1px solid black', width: '90%', display: 'flex', alignSelf: 'center', alignItems: 'center', borderRadius: 20, boxShadow: '0px 2px 4px rgba(0, 0, 6, 0.8)', }}
+          >
+            <Typography paddingRight={2}>{recipe.title}</Typography>
+            <Typography>{new Date(recipe.timestamp).toLocaleDateString()}</Typography>
+            <Box style={{ display: 'flex', justifyContent: 'flex-end', flex: 1 }}>
+              <IconButton component={RouterLink} to={`/recipe/${recipe.id}`} state={{ currentRecipe: recipe }}>
+                <Visibility />
+              </IconButton>
+              <IconButton component={RouterLink} to={`/recipeEditor/${recipe.id}`} state={{ currentRecipe: recipe }}>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={() => handleDeleteModalOpen(recipe.id)}>
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          </Box>
+        ))}
       </Stack>
-      <TableContainer>
-        <Table>
-          <TableBody>
-            {currentRecipes.map((recipe) => (
-              <TableRow key={recipe.id} style={{ backgroundColor: '#FBE9E7', borderRadius: 100 }}>
-                <TableCell>
-                  <div className="ms-2 me-auto">
-                    <div className="fw-bold">{recipe.title}</div>
-                    Created: {recipe.timestamp.toLocaleDateString()}
-                  </div>
-                </TableCell>
-                <TableCell align='right'>
-                <IconButton component={RouterLink} to={`/recipe/${recipe.id}`}  state={{ currentRecipe: recipe }}>
-                    <Visibility />
-                  </IconButton>
-                  <IconButton component={RouterLink} to={`/recipeEditor/${recipe.id}`}  state={{ currentRecipe: recipe }}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton  onClick={() => handleDeleteModalOpen(recipe.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
         <MobilePaginationComponent pageNumbers={pageNumbers} currentPage={currentPage} handleChange={handleChange} />
     </div>
   );

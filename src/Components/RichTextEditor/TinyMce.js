@@ -39,7 +39,7 @@ const TinyMCE = ({ handleEditorStateChange }) => {
                 style={{ display: 'none' }}
             />
             <Editor
-                apiKey='cnra8bfoc01172abmclve5xtbay0i4b7q9lb7hq5qj977oem'
+                apiKey= {process.env.REACT_APP_FIREBASE_TINYMCE_ID}
                 init={{
                     plugins: 'anchor autolink charmap codesample emoticons image link lists searchreplace visualblocks wordcount checklist casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode advtemplate mentions tableofcontents footnotes mergetags autocorrect inlinecss markdown',
                     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image | spellcheckdialog | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
