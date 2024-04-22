@@ -22,7 +22,7 @@ const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const pageNumbers = [];
-  const [recipesPerPage] = useState(5);
+  const [recipesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteItemId, setDeleteItemId] = useState(null); // Add state to store the id of the item to be deleted
 
