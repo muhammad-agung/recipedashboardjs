@@ -41,6 +41,7 @@ const Homepage = () => {
           id: doc.id,
           title: data.title,
           shortDesc: data.shortDesc,
+          category: data.category,
           timestamp: timestamp,
           content: data.content,
           thumbnail: data.thumbnail

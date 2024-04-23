@@ -1,5 +1,5 @@
 import {ref, uploadBytesResumable, getStorage, getDownloadURL  } from 'firebase/storage';
-import { getFirestore, collection, addDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc } from 'firebase/firestore';
 
 async function firebaseUpload(localImageFile) {
   try {
@@ -57,8 +57,8 @@ export const imageHandler = (file) =>{
   );
 }
 
-export const checkEmpty = (title, shortDesc, thumbnail, content) => {
-  if (!title.trim() || !shortDesc.trim() || !content.trim() || !thumbnail) {
+export const checkEmpty = (title, shortDesc, category, thumbnail, content) => {
+  if (!title.trim() || !shortDesc.trim() || category.length === 0 || !content.trim() || !thumbnail) {
     // If any of the fields are empty, show an alert
     alert('Items cannot be empty');
     return false;
@@ -69,7 +69,7 @@ export const checkEmpty = (title, shortDesc, thumbnail, content) => {
 };
 
 
-export const handleSave = async (id, editedTitle, editedDhortDesc, editedContent, editedThumbnail) => {
+export const handleSave = async (id, editedTitle, editedDhortDesc, editedCategory, editedContent, editedThumbnail) => {
   try {
     const firestore = getFirestore();
     const docRef = doc(firestore, 'users', id);
@@ -77,6 +77,7 @@ export const handleSave = async (id, editedTitle, editedDhortDesc, editedContent
     await updateDoc(docRef, {
          'title' : editedTitle,
          'shortDesc' : editedDhortDesc,
+         'category' : editedCategory,
          'content' : editedContent,
          'timestamp' : new Date(),
          'thumbnail' : editedThumbnail,

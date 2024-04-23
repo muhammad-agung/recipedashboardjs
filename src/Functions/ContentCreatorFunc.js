@@ -57,9 +57,9 @@ export const imageHandler = (file) =>{
   );
 }
 
-export const checkEmpty = (title, shortDesc, thumbnail, content) => {
+export const checkEmpty = (title, shortDesc, category, thumbnail, content) => {
   console.log(content)
-  if (!title.trim() || !shortDesc.trim() || !content.trim() || !thumbnail) {
+  if (!title.trim() || !shortDesc.trim()|| category.length === 0 || !content.trim() || !thumbnail) {
     // If any of the fields are empty, show an alert
     alert('Items cannot be empty');
     return false;
@@ -70,12 +70,13 @@ export const checkEmpty = (title, shortDesc, thumbnail, content) => {
 };
 
 
-export const handleSave = async (title, shortDesc, content, thumbnail) => {
+export const handleSave = async (title, shortDesc, category, content, thumbnail) => {
   try {
     const firestore = getFirestore();
     const docRef = await addDoc(collection(firestore, 'users'), {
       'title': title,
       'shortDesc': shortDesc,
+      'category': category,
       'content': content,
       'timestamp': new Date(),
       'thumbnail': thumbnail,

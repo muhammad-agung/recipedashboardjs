@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Navbar.css";
 import { getAuth, signOut } from "firebase/auth";
 import { Link as RouterLink } from 'react-router-dom';
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,8 +24,8 @@ export const Navbar = () => {
 
   return (
     <nav>
-      <Link to="/home" className="title">
-        My Recipe
+      <Link to="/" className="title">
+        Dashboard
       </Link>
       <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
         <span></span>
@@ -33,8 +33,14 @@ export const Navbar = () => {
         <span></span>
       </div>
       <ul style={{fontWeight:"bold"}} className={menuOpen ? "open" : ""}>
-      <li>
+        <li>
+        <Link component={RouterLink} to={`/`}>Recipe List</Link>
+        </li>
+        <li>
         <Link component={RouterLink} to={`/newrecipe`}>Create New Recipe</Link>
+        </li>
+        <li>
+        <Link component={RouterLink} to={`/category`}>Category</Link>
         </li>
         <li>
           <Link onClick={handleLogout}>Logout</Link>

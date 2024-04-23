@@ -24,6 +24,7 @@ const ContentDetailScreen = () => {
       >
         <h1>{currentRecipe.title}</h1>
         <p>{currentRecipe.shortDesc}</p>
+        <p>Category: {currentRecipe.category.join(', ')}</p>
         <img style={{paddingBottom: 20}} src={currentRecipe.thumbnail} alt={`Thumbnail for ${currentRecipe.title}`} />
         <Editor
           apiKey= {process.env.REACT_APP_FIREBASE_TINYMCE_ID}

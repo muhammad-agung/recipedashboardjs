@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, TextField, Button } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom'; // Import useLocation hook
-
 import { handleSave, checkEmpty } from '../Functions/ContentEditorFunc';
 import SaveModal from '../Components/Modal/SaveModal';
 import RichTextEditor from '../Components/RichTextEditor/TinyMceEditor'; // Import RichTextEditor component
-
+import {MenuItem, ListItemText, Checkbox, FormControl, InputLabel, OutlinedInput, Select} from '@mui/material';
 import ImageUploadHandler from '../Components/ImageUploadHandler';
+import { getFirestore, collection, getDocs} from 'firebase/firestore';
 
 const RecipeEditor = () => {
   const location = useLocation(); // Initialize useLocation hook
@@ -17,18 +17,40 @@ const RecipeEditor = () => {
   const [shortDesc, setShortDesc] = useState(currentRecipe.shortDesc);
   const [thumbnail, setThumbnail] = useState(currentRecipe.thumbnail);
   const [content, setContent] = useState(currentRecipe.content);
+  const [category, setCategory] = useState(currentRecipe.category);
+  const [categories, setCategories] = useState([]);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
-  const handleEditorStateChange = (newContent) => {
-    setContent(newContent);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const firestore = getFirestore();
+        const querySnapshot = await getDocs(collection(firestore, 'recipeCategories'));
+        const fetchedCategories = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  
+  const handleCategoryChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCategory(typeof value === 'string' ? value.split(',') : value);
+    console.log(category)
   };
 
   const handleSaveClick = async () => {
     try {
-      const saving = await handleSave(currentRecipe.id, title, shortDesc, content, thumbnail);
+      const saving = await handleSave(currentRecipe.id, title, shortDesc, category, content, thumbnail);
       if (saving) {
         alert('Update success');
-        navigate('/home');
+        navigate('/');
         setIsConfirmationVisible(false);
       } else {
         alert('Update failed');
@@ -39,8 +61,12 @@ const RecipeEditor = () => {
     }
   };
 
+  const handleEditorStateChange = (newContent) => {
+    setContent(newContent);
+  };
+
   const checkEmptyFunc = () => {
-    const checking = checkEmpty(title, shortDesc, thumbnail, content);
+    const checking = checkEmpty(title, shortDesc, category, thumbnail, content, category);
     setIsConfirmationVisible(checking);
   };
 
@@ -58,6 +84,7 @@ const RecipeEditor = () => {
 
   return (
     <div style={{ width: '100%', backgroundColor: '#FFCCBC', paddingTop: '1%', paddingBottom: '50px' }}>
+      <h1 style={{display:'flex', justifyContent:'center', padding: 10}}>Edit Recipe</h1>
       <Box
         sx={{
           display: 'flex',
@@ -87,8 +114,28 @@ const RecipeEditor = () => {
           onChange={(e) => setShortDesc(e.target.value)}
           style={{ marginBottom: '10px', width: '80%' }}
         />
+                <FormControl sx={{ m: 1, width: 300 }}>
+        <InputLabel id="demo-multiple-checkbox-label">Category</InputLabel>
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          multiple
+          value={category}
+          onChange={handleCategoryChange}
+          input={<OutlinedInput label="Category" />}
+          renderValue={(selected) => selected.join(', ')}
+          // MenuProps={MenuProps}
+        >
+          {categories.map((name) => (
+            <MenuItem key={name.id} value={name.id}>
+              <Checkbox checked={category.includes(name.id)} />
+              <ListItemText primary={name.name} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
         <ImageUploadHandler onThumbnailSelected={handleThumbnailSelected} deleteThumbnail={deleteThumbnail} thumbnail={thumbnail} />
-        <RichTextEditor content={content} handleEditorStateChange={handleEditorStateChange} /> {/* Replaced the Editor with RichTextEditor */}
+        <RichTextEditor content={content} handleEditorStateChange={handleEditorStateChange} />
         <Button variant="contained" onClick={checkEmptyFunc} style={{marginTop: 20}}>
           Update Recipe
         </Button>
