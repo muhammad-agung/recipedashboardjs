@@ -30,7 +30,7 @@ const UploadScreen = ({ onThumbnailSelected, thumbnail, deleteThumbnail }) => {
       Resizer.imageFileResizer(
         file,
         350,
-        450,
+        400,
         'JPEG',
         100,
         0,
