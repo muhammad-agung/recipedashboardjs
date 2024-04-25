@@ -29,8 +29,8 @@ const UploadScreen = ({ onThumbnailSelected, thumbnail, deleteThumbnail }) => {
     new Promise((resolve) => {
       Resizer.imageFileResizer(
         file,
-        350,
         400,
+        450,
         'JPEG',
         100,
         0,
@@ -62,7 +62,7 @@ const UploadScreen = ({ onThumbnailSelected, thumbnail, deleteThumbnail }) => {
         Delete Image
       </Button>
       <div>
-        {image && <img src={image.uri} alt="Thumbnail" style={{ width: 350, height: 450 }} />}
+        {image && <img src={image.uri} alt="Thumbnail" style={{ width: 400, height: 450 }} />}
       </div>
     </Box>
   );
